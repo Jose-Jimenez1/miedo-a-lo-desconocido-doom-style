@@ -16,16 +16,25 @@ class Menu:
     def __init__(self, game):
         self.game = game
         self.screen = game.screen
-        self.font = pg.font.SysFont("arial", 50)
+       # Cargar la fuente estilo 8-bit
+        self.font = pg.font.Font("8bit.ttf", 50)
         self.options = ["Iniciar Juego", "Configuración", "Salir"]
         self.selected_option = 0
+        
+    # Cargar la imagen de fondo
+        self.background_image = pg.image.load("backgroung_image.png").convert()
+        self.background_image = pg.transform.scale(self.background_image, self.screen.get_size())
 
     def draw(self):
-        self.screen.fill("black")
+        # Dibujar la imagen de fondo
+        self.screen.blit(self.background_image, (0, 0))
+
+        # Dibujar el título
         title_surface = self.font.render("Miedo a lo Desconocido", True, "white")
         title_rect = title_surface.get_rect(center=(self.game.screen.get_width() // 2, 100))
         self.screen.blit(title_surface, title_rect)
 
+        # Dibujar las opciones del menú
         for i, option in enumerate(self.options):
             color = "yellow" if i == self.selected_option else "white"
             option_surface = self.font.render(option, True, color)
@@ -33,7 +42,6 @@ class Menu:
             self.screen.blit(option_surface, option_rect)
 
         pg.display.flip()
-
     def handle_input(self):
         for event in pg.event.get():
             if event.type == pg.QUIT:
